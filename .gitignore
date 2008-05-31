@@ -1,0 +1,6 @@
+.DS_Store
+config/database.yml
+tmp/*
+log/*
+public/images/tmp/*
+

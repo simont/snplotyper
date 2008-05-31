@@ -1,0 +1,29 @@
+<div id="intro">
+	<h1>Select Region and Strains for Haplotype Analysis</h1>
+<p>SNPlotyper is built upon a database of SNPs and their genotypes in a variety of Rat strains. To create a haplotype view of a region of the rat genome, select the chromosome and start/stop coordinates for the region and then select the strains you wish to include in the analysis.</p>
+
+<p>For the purposes of this demonstration version, 100 SNPs have been loaded from around the <a href="http://rgd.mcw.edu/tools/genes/genes_view.cgi?id=62086">Sah</a> gene (ca. 178,070,000 bp). Select Chromosome 1 and use Start/Stop values between 174,485,928 bp and 185,692,567 bp so you can see how the tool works and explore the data that will be available from the <a href="http://www.snp-star.de/">STAR consortium</a>.</p>
+
+<p>To help us manage improvements to the tool, please take the time to use our tracking system and report any <a href="http://rubyforge.org/tracker/?func=add&group_id=3650&atid=14032">Bugs here</a>, and <a href="http://rubyforge.org/tracker/?func=add&group_id=3650&atid=14035">Feature requests here</a>.</p>
+</div>
+<%= form_tag({:action=>'haplotype_view'},{:id => "select_region"})%>
+<table>
+	<tr>
+		<th>1. Make Selections</th>
+		<th>2. Review and Submit</th>
+		<th>3. Advanced Options</th>
+	</tr>
+	<tr valign="top">
+
+  <%= render :partial => 'hap_parameters_form' %>
+<%= observe_form "select_region", 
+        :frequency => 2, 
+        :update => "parameters_selected",
+        :complete => "Element.show('parameters_selected')",
+		:url => { :action => "list_parameters" }
+		%>
+
+		
+	</tr>
+</table>
+<%= end_form_tag %>

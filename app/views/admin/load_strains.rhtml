@@ -1,0 +1,10 @@
+<h1>Load Strain File</h1>
+<p>Find me in app/views/admin/load_strains.rhtml</p>
+
+<%= form_tag({:action=>'load_strains'}, :multipart => true)%>
+<p><label for="inputfile">Upload a list of proteins from file</label></br>
+	<input type="file" name="inputfile"></p>
+  <%= submit_tag "Load Strains" %>
+<%= end_form_tag %>
+
+<%= @file_contents['verbose'] if @file_contents != nil %>

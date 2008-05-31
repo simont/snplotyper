@@ -1,0 +1,77 @@
+<div id="parameters_selected">
+	<div class="header">Current Selections</div>
+	<div class="selection_with_padding">
+		<p class="section"><strong>Region:</strong></p>
+		<ul class="parameters">
+			<li>Chromosome: <%= @analysis.chromosome || "<span style='color: red;'>Not Selected</span>"%></li>
+			<li>From: <%= number_with_delimiter(@analysis.start) || "<span style='color: red;'>Not Selected</span>" %></li>
+			<li>To: <%= number_with_delimiter(@analysis.end) || "<span style='color: red;'>Not Selected</span>" %></li>
+			<% 
+			total_markers = @analysis.total_selected_markers(@include_snps, @snp_count, @include_microsatellites, @microsat_count)
+			if total_markers > 400 %>
+				<span style='color: red;'>Region contains more than 400 markers (<%= total_markers %>)</span></br>
+			<% elsif  total_markers <= 0 %>
+				<span style='color: red;'>Region contains no markers</span></br>
+			<% else  %>
+				<% if @snp_count %>
+				<% if @snp_count == 0 %>
+					<span style='color: red;'><%= @snp_count %> SNPs in this region</span></br>
+					<% else %>
+						<% if !@include_snps %>
+							<del>
+						<% end %>
+						<%= @snp_count %> SNPs in this region</br>
+						<% if !@include_snps %>
+							</del>
+						<% end %>
+					<% end %>
+				<% end %>
+				<% if @microsat_count %>
+					<% if @microsat_count == 0 %>
+					<span style='color: red;'><%= @microsat_count %> SSLPs in this region</span></br>
+					<% else %>
+						<% if !@include_microsatellites %>
+							<del>
+						<% end %>
+						<%= @microsat_count %> SSLPs in this region</br>
+						<% if !@include_microsatellites %>
+							</del>
+						<% end %>
+					<% end %>
+				<% end %>
+			<%  end %>
+			
+		</ul>
+		<% if @analysis.selected_strains.empty? %>
+		<p class="section"><strong>Strains:</strong> <span style='color: red;'>None Selected</span></p>
+		<ul id="strain_list">
+		</ul>
+		<% else %>
+		<p class="section"><strong>Analysis Strains:</strong></p>
+		<p class="details_bottom">Drag strains up/down to reorder</p>
+		<ul id="strain_list" class="colored_bars">
+				<% @analysis.selected_strains.sort_by {|s| s.position}.each do |str2| %>
+					<% if @analysis.primary_strain_id && (str2.strain_id == @analysis.primary_strain_id) %>
+						<li id="strain_record_<%= str2.id %>" class="primary_strain group_<%= str2.analysis_group %>"><%= Strain.find(str2.strain_id).symbol %></li>
+					<% else %>
+						<li id="strain_record_<%= str2.id %>" class="group_<%= str2.analysis_group %>"><%= Strain.find(str2.strain_id).symbol %></li>
+					<% end %>
+				<% end %>
+			<% end %>
+		</ul>
+		<span style="align: center;">
+		<% if @analysis.is_complete? && @analysis.region_has_data?(@include_snps, @snp_count, @include_microsatellites, @microsat_count) %>
+		<input type="submit" onclick='Element.show("spinner_submit");' value = "Create View">
+			<%= image_tag("common/spinner.gif",
+              :align => 'absmiddle',
+              :border=> 0,
+              :id => "spinner_submit",
+              :style=>"display: none;" ) %>
+		<% else %>
+		<input disabled type="submit"  onclick='Element.show("spinner_submit");' value = "Create View">
+	
+		<% end %>
+		</span>
+		<%= sortable_element('strain_list', :url => {:action => 'sort', :id => @analysis}, :complete => visual_effect(:highlight, 'strain_list') ) %>
+	</div>
+</div>

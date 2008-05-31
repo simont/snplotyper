@@ -1,0 +1,11 @@
+<h1>Load Hapmap Genotype SNP File</h1>
+
+<%= form_tag({:action=>'load_snps'}, :multipart => true)%>
+<p><label for="inputfile">Upload a list of SNPs and genotypes from file</label></br>
+	<input type="file" name="inputfile"></p>
+	<input type="hidden" name="snp_format" id="snp_format" value="hapmap_genotype">
+  <%= submit_tag "Load SNPs" %>
+<%= end_form_tag %>
+
+<%= @file_contents["snp_count"] if @file_contents != nil %>
+<%= @file_contents["genotype_count"] if @file_contents != nil %>

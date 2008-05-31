@@ -1,0 +1,3 @@
+class Microsatellite < Marker
+
+end

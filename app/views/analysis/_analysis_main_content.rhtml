@@ -1,0 +1,31 @@
+<%= render :partial => "analysis_intro" %>
+
+<%= render :partial => "analysis_history"%>
+
+
+	<% form_for :analysis, @analysis, :url => { :action => "visualize" }, :html => {:id => "select_region", :name => "select_region_form"} do |f| %>
+	<input type="hidden" name="the_id" value="<%= @analysis.id %>">
+<table cellspacing = "10">
+	<tr>
+		<th>1. Make Selections</th>
+		<th>2. Review & Submit</th>
+		<th>3. Advanced Options</th>
+	</tr>
+	<tr valign="top">
+
+  <%= render :partial => "edit_analysis_form", 	:locals => { :f => f }
+ %>
+
+<%= observe_form "select_region", 
+        :frequency => 2, 
+        :update => "parameters_selected",
+        :complete => "Element.show('parameters_selected')",
+		:url => { :action => "list_parameters2", :id => @analysis.id }
+		%>
+
+		
+	</tr>
+</table>
+<% end %>
+
+ID: <%= @analysis.id %>

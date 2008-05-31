@@ -1,0 +1,13 @@
+<div class="chunk_results">
+	<div class="blue_fade_bg"><a name="<%=info["file_name"] %>">Chunk Results for <%=  number_with_delimiter(info["start"]) %> and <%= number_with_delimiter(info["end"]) %></div>
+	<p>Chunk Downloads: <a href="/data/<%= info["file_name"] %>_genotypes.hmp">Genotype File</a>
+	<% if @haploview_params["tagger"] == "1" %>
+	 | <a href="/data/<%= info["file_name"] %>_genotypes.hmp.TAGS">TAGS File</a> | 
+	<a href="/data/<%= info["file_name"] %>_genotypes.hmp.TESTS">TESTS File</a>
+	<% end %></p>
+
+	<div class="ld_plot">
+		<p>LD Plot for SNPs between <%= number_with_delimiter(info["start"]) %> and <%= number_with_delimiter(info["end"]) %></p>
+		<img src="/data/<%= info["file_name"] %>_genotypes.hmp.LD.PNG" alt="haploview LD plot">
+	</div>
+<div>

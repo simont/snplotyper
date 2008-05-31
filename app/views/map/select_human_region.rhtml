@@ -1,0 +1,23 @@
+<h1>Select Population and Region for Haplotype Analysis</h1>
+
+
+<table>
+	<tr valign="top">
+		<td>
+<%= form_tag({:action=>'haplotype_view'},{:id => "select_human_region"})%>
+  <%= render :partial => 'hap_human_parameters_form' %>
+  <%= submit_tag "Create View" %>
+<%= end_form_tag %>
+
+<%= observe_form "select_human_region", 
+        :frequency => 2, 
+        :update => "parameters_selected",
+        :complete => "Element.show('parameters_selected')",
+        :url => { :action => "list_parameters" } %>
+		</td>
+		<td style="width: 200px;">
+				<div id="parameters_selected">
+				</div>
+		</td>
+	</tr>
+</table>

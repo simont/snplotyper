@@ -1,0 +1,48 @@
+
+<% @display_setting ||= 'none' %>
+<div id="analysis_history">
+<% if @analysis_history.size > 0 %>
+	<div class="header">You can also rerun <%= pluralize(@analysis_history.size, "analysis") %> <a href="#" onclick="show_sections2('analysis_history_table'); return false;" id='sec-text-analysis_history_table'>[show]</a></div>
+	<div id='sec-analysis_history_table' style="display: <%= @display_setting %>;" class="dropshadow draw_div">
+<table cellspacing="0" width="100%" id="analysis_history_table">
+	<tr>
+		<th>Created</th>
+		<th>Chr</th>
+		<th>From</th>
+		<th>To</th>
+		<th>Strains</th>
+	</tr>
+
+<% @analysis_history.each do |old_analysis|
+	
+		# dont display the current analysis in the history list
+		next if old_analysis.id == @analysis.id
+		# if old_analysis.chromosome != nil && old_analysis.start != nil && old_analysis.end != nil && !old_analysis.strains.empty?
+	%>
+		<tr>
+			<td><%= time_ago_in_words(old_analysis.updated_at) %> ago</td>
+			<td><%= old_analysis.chromosome %></td>
+			<td align="right"><%= number_with_delimiter(old_analysis.start) %></td>
+			<td align="right"><%= number_with_delimiter(old_analysis.end) %></td>
+			<td><%= old_analysis.strains.collect {|s| s.symbol }.join(", ") %></td>
+			<td>
+				<form action="/analysis/edit" method="post">
+								<input name="the_id" type="hidden" value="<%= old_analysis.id %>" />
+								<input type="image" src="/images/common/rerun_button_up.gif" value="submit" alt="Rerun Analysis">
+							</form>
+			</td>
+			<td><%= link_to_remote (image_tag('/images/common/trash.gif', :border => 0, :alt => 'Delete')),
+				:update => 'analysis_history',
+				:url => { :controller => 'analysis', :action => 'delete_old_analysis', :id => old_analysis.id },
+				:confirm => "Are you sure you want to remove this analysis???",
+				:post => true,
+				:title => "Delete this analysis" %></td>
+		</tr>
+<% 
+		# end
+	end
+%>
+</table>
+</div>
+<% end %>
+</div>

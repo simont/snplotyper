@@ -1,0 +1,21 @@
+<fieldset>
+	<legend>Haploview Parameters</legend>
+		<p><label for="haploview_minGeno">Minimum Non-zero Genotypes: (0-1)</label><%= text_field 'haploview','minGeno', "size" => 10, "value" => 0.75 %></p>
+		<p><label for="haploview_hwcutoff">Exclude markers with a Hardy Weinberg p-value less than: (0-1)</label><%= text_field 'haploview','hwcutoff', "size" => 10, "value" => 0.001 %></p>
+		<p><label for="haploview_maxMendel">Exclude markers with Mendelian inheritance errors greater than:  </label><%= text_field 'haploview','maxMendel', "size" => 10, "value" => 1 %></p>
+		<p><label for="haploview_minMAF">Exclude all markers with minor allele frequency below: </label><%= text_field 'haploview','minMAF', "size" => 10, "value" => 0.05 %></p>
+</fieldset>
+
+<fieldset>
+	<legend>Haploview Region Chunking Parameters</legend>
+	<!-- <p><label for="haploview_chunksize">Region Chunk Size: </label><%= text_field 'haploview','chunksize', "size" => 10, "value" => 1000000 %></p> -->
+	<p><label for="haploview_snp_chunksize">Number of SNPs per 'chunk': </label><%= text_field 'haploview','snp_chunksize', "size" => 4, "value" => 75 %></p>
+</fieldset>
+
+<fieldset>
+	<legend>Haploview Tag SNP Parameters</legend>
+		<p><%= check_box 'haploview','tagger' %><label for="haploview_tagger">Run Tag SNP analysis</label></p>
+		<p><%= check_box 'haploview','aggressiveTagging' %><label for="haploview_aggressiveTagging">Use Aggressive Tagging</label></p>
+		<p><label for="haploview_tagrsqcutoff">Tagger r<sup>2</sup> cutoff: </label><%= text_field 'haploview','tagrsqcutoff', "size" => 10, "value" => 0.8 %></p>
+		<p><label for="haploview_taglodcutoff">Tagger LOD score cutoff: </label><%= text_field 'haploview','taglodcutoff', "size" => 10, "value" => 0 %></p>
+</fieldset>

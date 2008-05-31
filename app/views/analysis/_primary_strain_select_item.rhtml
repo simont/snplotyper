@@ -1,0 +1,9 @@
+<option value="no_primary">No Primary Strain</option>
+<% @analysis.strains.each do |s| 
+	if @primary_strain_id && s.id == @primary_strain_id.to_i
+	%>
+	<option id="p_select_option_id_<%= s.id %>" value="<%= s.id %>" selected><%= h(s.symbol) %></option>
+	<% else %>
+	<option id="p_select_option_id_<%= s.id %>" value="<%= s.id %>"><%= h(s.symbol) %></option>
+	<% end %>
+<% end %>

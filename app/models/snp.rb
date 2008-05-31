@@ -1,0 +1,3 @@
+class Snp < Marker
+  
+end

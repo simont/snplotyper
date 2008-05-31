@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: MapController</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">MapController</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/app/controllers/map_controller_rb.html">
+                app/controllers/map_controller.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="ApplicationController.html">
+                ApplicationController
+               </a>
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000011">draw_haplotype_image</a>&nbsp;&nbsp;
+      <a href="#M000009">get_haplotype_img</a>&nbsp;&nbsp;
+      <a href="#M000008">haplotype_view</a>&nbsp;&nbsp;
+      <a href="#M000010">process_haplotype_request</a>&nbsp;&nbsp;
+      <a href="#M000012">select_region</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name">Magick</span>
+      </div>
+    </div>
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000011" class="method-detail">
+        <a name="M000011"></a>
+
+        <div class="method-heading">
+          <a href="#M000011" class="method-signature">
+          <span class="method-name">draw_haplotype_image</span><span class="method-args">(markers, strains, genotypes, show_genotype_text)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="MapController.html#M000011">draw_haplotype_image</a> returns the
+image of the haplotype data
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000011-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000011-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/map_controller.rb, line 91</span>
+ 91:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">draw_haplotype_image</span>(<span class="ruby-identifier">markers</span>, <span class="ruby-identifier">strains</span>, <span class="ruby-identifier">genotypes</span>, <span class="ruby-identifier">show_genotype_text</span>)
+ 92: 
+ 93: 
+ 94:     <span class="ruby-constant">RVG</span><span class="ruby-operator">::</span><span class="ruby-identifier">dpi</span> = <span class="ruby-value">72</span>
+ 95: 
+ 96:     <span class="ruby-identifier">box_px</span> = <span class="ruby-identifier">font_size</span> = <span class="ruby-value">12</span>
+ 97:     <span class="ruby-identifier">hap_start</span> = <span class="ruby-value">200</span>
+ 98:     <span class="ruby-identifier">img_padding</span> = <span class="ruby-value">10</span>
+ 99: 
+100:     <span class="ruby-identifier">hap_x_start</span> = <span class="ruby-value">100</span>
+101: 
+102:     <span class="ruby-identifier">image_width_px</span> = <span class="ruby-identifier">hap_start</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">strains</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">box_px</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">img_padding</span>
+103:     <span class="ruby-identifier">image_width_inches</span> = (<span class="ruby-identifier">image_width_px</span><span class="ruby-operator">/</span><span class="ruby-value">72</span>).<span class="ruby-identifier">abs</span>
+104: 
+105:     <span class="ruby-identifier">image_height_px</span> = <span class="ruby-identifier">hap_x_start</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">markers</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">box_px</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">img_padding</span>
+106:     <span class="ruby-identifier">image_height_inches</span> = (<span class="ruby-identifier">image_height_px</span><span class="ruby-operator">/</span><span class="ruby-value">72</span>).<span class="ruby-identifier">abs</span>
+107: 
+108:     <span class="ruby-ivar">@strain_list</span> = {}
+109:     <span class="ruby-identifier">strains</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">st</span><span class="ruby-operator">|</span>
+110:       <span class="ruby-ivar">@strain_list</span>[<span class="ruby-identifier">st</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">st</span>.<span class="ruby-identifier">symbol</span>
+111:       <span class="ruby-identifier">$LOG</span>.<span class="ruby-identifier">warn</span>(<span class="ruby-node">&quot;strain id: #{st.id} type: #{st.id.to_s.type}&quot;</span>)
+112:     <span class="ruby-keyword kw">end</span>
+113: 
+114:     <span class="ruby-identifier">rvg</span> = <span class="ruby-constant">RVG</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">image_width_inches</span>.<span class="ruby-identifier">in</span>, <span class="ruby-identifier">image_height_inches</span>.<span class="ruby-identifier">in</span> ).<span class="ruby-identifier">viewbox</span>(<span class="ruby-value">0</span>,<span class="ruby-value">0</span>,<span class="ruby-identifier">image_width_px</span>,<span class="ruby-identifier">image_height_px</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">canvas</span><span class="ruby-operator">|</span>
+115:       <span class="ruby-identifier">canvas</span>.<span class="ruby-identifier">background_fill</span> = <span class="ruby-value str">'white'</span>
+116: 
+117:       <span class="ruby-identifier">strains</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">s</span>,<span class="ruby-identifier">str_i</span><span class="ruby-operator">|</span>
+118:         <span class="ruby-identifier">canvas</span>.<span class="ruby-identifier">text</span>(<span class="ruby-value">200</span><span class="ruby-operator">+</span>(<span class="ruby-identifier">box_px</span><span class="ruby-operator">*</span>(<span class="ruby-identifier">str_i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>)), <span class="ruby-value">0</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">str</span><span class="ruby-operator">|</span>
+119:           <span class="ruby-identifier">str</span>.<span class="ruby-identifier">tspan</span>(<span class="ruby-identifier">s</span>.<span class="ruby-identifier">symbol</span>).<span class="ruby-identifier">styles</span>(<span class="ruby-identifier">:writing_mode=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'tb'</span>,
+120:           <span class="ruby-identifier">:glyph_orientation_vertical=</span><span class="ruby-operator">&gt;</span><span class="ruby-value">90</span>,
+121:           <span class="ruby-identifier">:fill=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'black'</span>,
+122:           <span class="ruby-identifier">:font_weight=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'bold'</span>,
+123:           <span class="ruby-identifier">:font_size=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">font_size</span>)
+124:         <span class="ruby-keyword kw">end</span>
+125:       <span class="ruby-keyword kw">end</span>
+126: 
+127: 
+128:       <span class="ruby-identifier">markers</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">m</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+129:         <span class="ruby-identifier">canvas</span>.<span class="ruby-identifier">text</span>(<span class="ruby-value">10</span>, <span class="ruby-identifier">hap_x_start</span><span class="ruby-operator">+</span>(<span class="ruby-identifier">font_size</span><span class="ruby-operator">*</span><span class="ruby-identifier">i</span>)) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">title</span><span class="ruby-operator">|</span>
+130:           <span class="ruby-identifier">title</span>.<span class="ruby-identifier">tspan</span>(<span class="ruby-identifier">m</span>.<span class="ruby-identifier">symbol</span>).<span class="ruby-identifier">styles</span>(<span class="ruby-identifier">:font_size=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">font_size</span>,
+131:           <span class="ruby-identifier">:font_family=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'helvetica'</span>, <span class="ruby-identifier">:fill=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'black'</span>)
+132:         <span class="ruby-keyword kw">end</span>
+133: 
+134:         <span class="ruby-comment cmt"># create a RVG Group for the haplotype blocks and reuse?</span>
+135:         <span class="ruby-identifier">j</span> = <span class="ruby-value">1</span>
+136:         <span class="ruby-identifier">genotypes</span>[<span class="ruby-identifier">m</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">g</span><span class="ruby-operator">|</span>
+137:           <span class="ruby-comment cmt"># $LOG.warn(&quot;TEST: #{g.strain_id} , #{@strain_list.has_key?(g.strain_id.to_s)}&quot;)</span>
+138:           <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@strain_list</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">g</span>.<span class="ruby-identifier">strain_id</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span>
+139:             <span class="ruby-keyword kw">next</span>
+140:           <span class="ruby-keyword kw">end</span>
+141:           <span class="ruby-identifier">$LOG</span>.<span class="ruby-identifier">warn</span>(<span class="ruby-node">&quot;NOW: #{g.strain_id} , #{@strain_list.has_key?(g.strain_id.to_s)}&quot;</span>)
+142:           <span class="ruby-identifier">$LOG</span>.<span class="ruby-identifier">warn</span>(<span class="ruby-node">&quot;NOW: #{g.genotype_code}&quot;</span>)
+143: 
+144:           <span class="ruby-identifier">canvas</span>.<span class="ruby-identifier">text</span>(<span class="ruby-value">200</span><span class="ruby-operator">+</span>(<span class="ruby-identifier">box_px</span><span class="ruby-operator">*</span><span class="ruby-identifier">j</span>), <span class="ruby-identifier">hap_x_start</span><span class="ruby-operator">+</span>(<span class="ruby-identifier">box_px</span><span class="ruby-operator">*</span><span class="ruby-identifier">i</span>)) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">gen</span><span class="ruby-operator">|</span>
+145:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">g</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">nil</span>
+146: 
+147:               <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">show_genotype_text</span>
+148:                 <span class="ruby-identifier">gen</span>.<span class="ruby-identifier">tspan</span>(<span class="ruby-identifier">g</span>.<span class="ruby-identifier">genotype_code</span>).<span class="ruby-identifier">styles</span>(<span class="ruby-identifier">:font_size=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">font_size</span>, <span class="ruby-identifier">:font_family=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'helvetica'</span>, <span class="ruby-identifier">:fill=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'black'</span>)
+149:               <span class="ruby-keyword kw">end</span>
+150: 
+151:               <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">g</span>.<span class="ruby-identifier">genotype_code</span>
+152:               <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span>
+153:                 <span class="ruby-identifier">box_fill</span> = <span class="ruby-value str">'lightblue'</span>
+154:               <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span>
+155:                 <span class="ruby-identifier">box_fill</span> = <span class="ruby-value str">'palegoldenrod'</span>
+156:               <span class="ruby-keyword kw">when</span> <span class="ruby-value">2</span>
+157:                 <span class="ruby-identifier">box_fill</span> = <span class="ruby-value str">'tomato'</span>
+158:               <span class="ruby-keyword kw">when</span> <span class="ruby-value">5</span>
+159:                 <span class="ruby-identifier">box_fill</span> = <span class="ruby-value str">'white'</span>
+160:               <span class="ruby-keyword kw">when</span> <span class="ruby-value">6</span>
+161:                 <span class="ruby-identifier">box_fill</span> = <span class="ruby-value str">'white'</span>
+162:               <span class="ruby-keyword kw">else</span>
+163:                 <span class="ruby-identifier">box_fill</span> = <span class="ruby-value str">'grey'</span>
+164:               <span class="ruby-keyword kw">end</span>
+165: 
+166:               <span class="ruby-identifier">canvas</span>.<span class="ruby-identifier">rect</span>(<span class="ruby-identifier">box_px</span>, <span class="ruby-identifier">box_px</span>, <span class="ruby-value">200</span><span class="ruby-operator">+</span>(<span class="ruby-identifier">box_px</span><span class="ruby-operator">*</span><span class="ruby-identifier">j</span>), <span class="ruby-identifier">hap_x_start</span><span class="ruby-operator">+</span>(<span class="ruby-identifier">box_px</span><span class="ruby-operator">*</span>(<span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>))).<span class="ruby-identifier">styles</span>(<span class="ruby-identifier">:fill=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">box_fill</span>, <span class="ruby-identifier">:stroke=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'grey'</span>, <span class="ruby-identifier">:stroke_width=</span><span class="ruby-operator">&gt;</span><span class="ruby-value">2</span>)
+167: 
+168:             <span class="ruby-keyword kw">else</span>
+169:               <span class="ruby-identifier">gen</span>.<span class="ruby-identifier">tspan</span>(<span class="ruby-value str">'?'</span>).<span class="ruby-identifier">styles</span>(<span class="ruby-identifier">:font_size=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">font_size</span>,
+170:               <span class="ruby-identifier">:font_family=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'helvetica'</span>, <span class="ruby-identifier">:fill=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'black'</span>)
+171:             <span class="ruby-keyword kw">end</span>
+172:           <span class="ruby-keyword kw">end</span>
+173:           <span class="ruby-identifier">j</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+174:         <span class="ruby-keyword kw">end</span>
+175:       <span class="ruby-keyword kw">end</span>
+176:     <span class="ruby-keyword kw">end</span>
+177: 
+178:     <span class="ruby-identifier">tmp_file</span> = <span class="ruby-node">&quot;snp_tmp_#{rand(100000)}.gif&quot;</span>
+179: 
+180:     <span class="ruby-identifier">rvg</span>.<span class="ruby-identifier">draw</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">tmp_file</span>)
+181: 
+182:     <span class="ruby-keyword kw">return</span> <span class="ruby-node">&quot;/#{tmp_file}&quot;</span>
+183:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000009" class="method-detail">
+        <a name="M000009"></a>
+
+        <div class="method-heading">
+          <a href="#M000009" class="method-signature">
+          <span class="method-name">get_haplotype_img</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Provides a method to get the haplotype image via a GET call so that it can
+be used in mashups in different contexts that in this application. It
+requires a number of parameters to be passed in via the URL. To create an
+image for the SNP data on chromosome 2 between 20Mb and 40Mb for the USA
+Strains, the sample URL would look something like this:
+</p>
+<p>
+<a
+href="http://0.0.0.0:30000/map/get_haplotype_img?chromosome=2&start=20000000&stop=40000000&country=USA">0.0.0.0:30000/map/get_haplotype_img?chromosome=2&start=20000000&stop=40000000&country=USA</a>
+</p>
+<ul>
+<li><tt>chromosome</tt> the chromosome (1-20,X,Y)
+
+</li>
+<li><tt>start</tt> the region start coordinates (base pairs)
+
+</li>
+<li><tt>stop</tt> the region end coordinates (base pairs)
+
+</li>
+<li><tt>country</tt> Optional country designation to select strains from that
+country
+
+</li>
+</ul>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000009-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/map_controller.rb, line 37</span>
+37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_haplotype_img</span>
+38: 
+39:     <span class="ruby-identifier">map</span> = <span class="ruby-constant">Map</span>.<span class="ruby-identifier">find</span>(<span class="ruby-value">1</span>)
+40:     <span class="ruby-ivar">@markers</span> = []
+41:       <span class="ruby-identifier">chromosome</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'chromosome'</span>] <span class="ruby-operator">||</span> <span class="ruby-value">1</span>
+42:       <span class="ruby-identifier">start</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'start'</span>] <span class="ruby-operator">||</span> <span class="ruby-value">20000000</span>
+43:       <span class="ruby-identifier">stop</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'end'</span>] <span class="ruby-operator">||</span> <span class="ruby-value">25000000</span>
+44:       
+45:        <span class="ruby-comment cmt"># do the processing to get the data and create the image</span>
+46:       <span class="ruby-identifier">process_haplotype_request</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">start</span>, <span class="ruby-identifier">stop</span>, <span class="ruby-identifier">params</span>[<span class="ruby-value str">'country'</span>])
+47:       <span class="ruby-comment cmt"># redirect output to the image file itself, thereby rendering the file</span>
+48:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">draw_haplotype_image</span>(<span class="ruby-ivar">@markers</span>, <span class="ruby-ivar">@strains</span>, <span class="ruby-ivar">@genotypes</span>, <span class="ruby-keyword kw">false</span>)
+49: 
+50:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000008" class="method-detail">
+        <a name="M000008"></a>
+
+        <div class="method-heading">
+          <a href="#M000008" class="method-signature">
+          <span class="method-name">haplotype_view</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000008-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/map_controller.rb, line 6</span>
+ 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">haplotype_view</span>
+ 7: 
+ 8:     <span class="ruby-identifier">map</span> = <span class="ruby-constant">Map</span>.<span class="ruby-identifier">find</span>(<span class="ruby-value">1</span>)
+ 9:     <span class="ruby-ivar">@markers</span> = []
+10:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+11:       <span class="ruby-identifier">chromosome</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:region</span>][<span class="ruby-value str">'chromosome'</span>]
+12:       <span class="ruby-identifier">start</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:region</span>][<span class="ruby-value str">'start'</span>]
+13:       <span class="ruby-identifier">stop</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:region</span>][<span class="ruby-value str">'end'</span>]
+14:       
+15:       <span class="ruby-comment cmt"># do the processing to get the data and create the image</span>
+16:       <span class="ruby-identifier">process_haplotype_request</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">start</span>, <span class="ruby-identifier">stop</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:origin</span>][<span class="ruby-value str">'country'</span>])
+17:       
+18:       <span class="ruby-ivar">@image_src</span> = <span class="ruby-identifier">draw_haplotype_image</span>(<span class="ruby-ivar">@markers</span>, <span class="ruby-ivar">@strains</span>, <span class="ruby-ivar">@genotypes</span>, <span class="ruby-keyword kw">false</span>)
+19:     <span class="ruby-keyword kw">end</span>
+20: 
+21:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000010" class="method-detail">
+        <a name="M000010"></a>
+
+        <div class="method-heading">
+          <a href="#M000010" class="method-signature">
+          <span class="method-name">process_haplotype_request</span><span class="method-args">(chromosome, start, stop, country)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Responsible for getting the markers, genotype and strain recors for a given
+haplotype. This is a generic method called by a number of functions
+including <a href="MapController.html#M000009">get_haplotype_img</a> and <a
+href="MapController.html#M000008">haplotype_view</a>. Separating the code
+out allows us to cope with POST requests from the form (<a
+href="MapController.html#M000008">haplotype_view</a>) and GET requests for
+the image itself via <a
+href="MapController.html#M000009">get_haplotype_img</a>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000010-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/map_controller.rb, line 58</span>
+58:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">process_haplotype_request</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">start</span>, <span class="ruby-identifier">stop</span>, <span class="ruby-identifier">country</span>)
+59:     
+60:     <span class="ruby-identifier">map</span> = <span class="ruby-constant">Map</span>.<span class="ruby-identifier">find</span>(<span class="ruby-value">1</span>)
+61:     <span class="ruby-ivar">@markers</span> = <span class="ruby-identifier">map</span>.<span class="ruby-identifier">find_on_chr_between_start_and_stop</span>(<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">to_i</span>,<span class="ruby-identifier">start</span>.<span class="ruby-identifier">to_i</span>,<span class="ruby-identifier">stop</span>.<span class="ruby-identifier">to_i</span>)
+62:     <span class="ruby-identifier">strain_sql_root</span> = <span class="ruby-value str">&quot;select * from strains where &quot;</span>
+63:     <span class="ruby-identifier">strain_sql_options</span> = []
+64:     <span class="ruby-identifier">strain_sql_params</span> = []
+65:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">country</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
+66:       <span class="ruby-identifier">strain_sql_options</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;origin = ?&quot;</span>
+67:       <span class="ruby-identifier">strain_sql_params</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">country</span>
+68:     <span class="ruby-keyword kw">end</span>
+69: 
+70:     <span class="ruby-identifier">strain_sql</span> = <span class="ruby-node">&quot;#{strain_sql_root} #{strain_sql_options} order by symbol ASC&quot;</span>
+71:     <span class="ruby-identifier">$LOG</span>.<span class="ruby-identifier">warn</span>(<span class="ruby-node">&quot;SQL: #{strain_sql}&quot;</span>)
+72:     <span class="ruby-ivar">@strains</span> = <span class="ruby-constant">Strain</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;origin = ?&quot;</span>, <span class="ruby-identifier">strain_sql_params</span>[<span class="ruby-value">0</span>]], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;symbol ASC&quot;</span>)
+73: 
+74:     <span class="ruby-ivar">@start</span> = <span class="ruby-identifier">start</span>
+75:     <span class="ruby-ivar">@stop</span> = <span class="ruby-identifier">stop</span>
+76:     <span class="ruby-ivar">@chromosome</span> = <span class="ruby-identifier">chromosome</span>
+77: 
+78:     <span class="ruby-ivar">@genotypes</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+79:     <span class="ruby-ivar">@markers</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
+80:       <span class="ruby-ivar">@genotypes</span>[<span class="ruby-identifier">m</span>] = <span class="ruby-constant">Genotype</span>.<span class="ruby-identifier">find_all_by_genotypable_id</span>(<span class="ruby-identifier">m</span>.<span class="ruby-identifier">id</span>)
+81:     <span class="ruby-keyword kw">end</span>
+82:     
+83:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000012" class="method-detail">
+        <a name="M000012"></a>
+
+        <div class="method-heading">
+          <a href="#M000012" class="method-signature">
+          <span class="method-name">select_region</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000012-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000012-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/map_controller.rb, line 187</span>
+187:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_region</span>
+188:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+189: 
+190:     <span class="ruby-keyword kw">else</span>
+191:       <span class="ruby-identifier">origin_labs</span> = <span class="ruby-constant">Strain</span>.<span class="ruby-identifier">find_by_sql</span>(<span class="ruby-value str">&quot;select origin_lab from strains group by origin_lab&quot;</span>)
+192:       <span class="ruby-ivar">@lab_menu</span> = []
+193:       <span class="ruby-identifier">origin_labs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">lab</span><span class="ruby-operator">|</span>
+194:         <span class="ruby-ivar">@lab_menu</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">lab</span>.<span class="ruby-identifier">origin_lab</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">lab</span>.<span class="ruby-identifier">origin_lab</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">lab</span>.<span class="ruby-identifier">origin_lab</span> <span class="ruby-operator">!=</span> <span class="ruby-value str">''</span>)
+195:       <span class="ruby-keyword kw">end</span>
+196: 
+197:       <span class="ruby-identifier">origin_country</span> = <span class="ruby-constant">Strain</span>.<span class="ruby-identifier">find_by_sql</span>(<span class="ruby-value str">&quot;select origin from strains group by origin&quot;</span>)
+198:       <span class="ruby-ivar">@country_menu</span> = []
+199:       <span class="ruby-identifier">origin_country</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">country</span><span class="ruby-operator">|</span>
+200:         <span class="ruby-ivar">@country_menu</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">country</span>.<span class="ruby-identifier">origin</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">country</span>.<span class="ruby-identifier">origin</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">country</span>.<span class="ruby-identifier">origin</span> <span class="ruby-operator">!=</span> <span class="ruby-value str">''</span>)
+201:       <span class="ruby-keyword kw">end</span>
+202: 
+203:       <span class="ruby-identifier">chromosomes</span> = <span class="ruby-constant">MapPosition</span>.<span class="ruby-identifier">find_by_sql</span>(<span class="ruby-value str">&quot;select chromosome_label from map_positions where map_id = 1 group by chromosome_label order by chromosome_number asc&quot;</span>)
+204:       <span class="ruby-ivar">@chromosome_menu</span> = []
+205:       <span class="ruby-identifier">chromosomes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chr</span><span class="ruby-operator">|</span>
+206:         <span class="ruby-ivar">@chromosome_menu</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">chr</span>.<span class="ruby-identifier">chromosome_label</span>
+207:       <span class="ruby-keyword kw">end</span>
+208:     <span class="ruby-keyword kw">end</span>
+209: 
+210:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

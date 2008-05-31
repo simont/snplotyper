@@ -1,0 +1,31 @@
+<h1>Marker#list</h1>
+
+<%= @snps %>
+<%= @microsatellites %>
+
+<table cellspacing="0" cellpadding="0">
+	<tr>
+		<th>Marker</th>
+		<th>Type</th>
+		<th>Chr</th>
+		<th>bp</th>
+	</tr>	
+
+<% @markers.each do |m| %>
+	<tr>
+	<% positions = MapPosition.find(:first, :conditions => ["mappable_id = ?", m.id]) %>
+	<% genotypes = Genotype.find(:all, :conditions => ["genotypable_id = ?", m.id]) %>
+
+<td><%= m.symbol %></td><td><%= m.marker_type %></td><td><%= positions.chromosome_label %></td><td><%= positions.start.to_i %></td><td>
+
+	<% if genotypes.empty? %>
+	 [No Genotype Data Available]
+	<% else %>	
+		<% genotypes.each do |g| %>
+		<td class="genotype_<%= g.genotype_code %>"><%= g.genotype_code %>&nbsp;</td>
+		<% end %>
+	<% end %>
+	</td>
+	</tr>
+<% end %>
+</table>

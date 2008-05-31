@@ -1,0 +1,45 @@
+<html>
+<head>
+	<title>SNPlotyper</title>
+	<%= stylesheet_link_tag 'standard' %>	
+	<%= javascript_include_tag :defaults %>
+	<%= stylesheet_link_tag 'tab-webfx' %>
+	<%= javascript_include_tag 'tabpane' %>
+	<%= javascript_include_tag 'snplotyper' %>
+	
+</head>
+
+<body>
+	<div id="main_content">
+		<div id="header">
+			<img src="/images/common/rgd-logo-prototype.gif" align="top"><img src="/images/common/header-bkgd-rgd.gif" align="top">
+		</div>
+		<div id="nav-bar">
+		<!-- Uncomment line below if Human SNP data is loaded into database		 -->
+		<!-- <%= link_to 'Select new Human Region', :controller => 'map', :action => 'select_human_region'%> | -->
+		
+		 <%= link_to 'Analyze new Rat Region', :controller => 'analysis', :action => 'new'%>
+		</div>
+		<div id="body">
+			<% if flash[:notice] %><p style="color: green"><%= flash[:notice] %></p><% end %>
+			<% if flash[:warning] %><p class="flash_warning"><%= flash[:warning] %></p><% end %>
+			<% if flash[:error] %><p style="color: red"><%= flash[:error] %></p><% end %>
+	
+			<%= yield %>
+		</div>	
+	</div>
+	<div id="footer">
+		<a href="http://rubyforge.org/projects/snplotyper">SNPlotyper</a> &copy; MCW 2007-8, Contact <a href="mailto:simont@hmgc.mcw.edu">Simon Twigger</a>
+	</div>
+	<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+	var pageTracker = _gat._getTracker("UA-3282433-3");
+	pageTracker._initData();
+	pageTracker._trackPageview();
+	</script>
+</body>
+
+</html>

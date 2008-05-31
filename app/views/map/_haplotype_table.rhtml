@@ -1,0 +1,31 @@
+<div id="haplotype_table">
+	<table cellspacing="0" cellpadding=0 border=0>
+		<tr>
+			<th>Marker Info</th>
+			<th colspan="<%= @strains.size+2 %>">Haplotype</th>
+		</tr>
+		<tr>
+			<th>Symbol</th>
+			<th>Chr</th>
+			<th>Position</th>
+			<th colspan="<%= @strains.size %>">strains_go_here</th>
+		</tr>
+		<% @markers.each do |m| %>
+		<tr>
+			<td><%= m.symbol %></td><td><%= m.map_positions[0].chromosome_number %></td><td><%= m.map_positions[0].start %></td>
+			<% if @genotypes[m] != nil %>
+				<% @genotypes[m].each_with_index do |gen,i| %>
+					<% if gen != nil%>
+					<td class="genotype_<%= gen.genotype_code %>"><%= gen.genotype_code %></td>
+					<% else %>
+					<td class="no_data">-</td>
+					<% end %>
+				<% end %>
+
+			<% else %>
+				<td class="no_data" colspan="<%= @strains.size %>">No genotype data for this marker </td>
+			<% end %>
+		</tr>
+		<% end %>
+	</table>
+</div>

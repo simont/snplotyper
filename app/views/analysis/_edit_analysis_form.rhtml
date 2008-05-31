@@ -1,0 +1,242 @@
+<!--[form:list]-->
+<td>
+<fieldset>
+	<legend>Region Parameters</legend>
+	<table>
+		<tr>
+			<td>
+<label for="analysis_chromosome">Chromosome</label>
+			</td>
+			<td>
+	<select name="analysis[chromosome]" id="chr_select">
+		<option value="0">Select Chromosome</option>
+		<% @chromosome_menu.each do |chr| %>
+			<% if chr.to_s == @analysis.chromosome.to_s %>
+				<option value="<%= chr %>" selected><%= chr %></option>
+			<% else %>
+	       		<option value="<%= chr %>"><%= chr %></option>
+			<% end %>
+	     <% end %>
+	</select>
+	<input type="hidden" name="analysis[map]" value="1">
+	</p>
+		</td>
+		</tr>
+		<tr>
+			<td>
+				<p><label for="analysis_start">From: </label></td>
+			<td>
+				<%= f.text_field :start, :size => "10" %> bp
+			</td>
+		</tr>
+		<tr>
+			<td><label for="analysis_end">To: </label>
+			</td>
+			<td><%= f.text_field :end, :size => "10" %> bp
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><label for="analysis_end">Region must contain < 400 markers</label>
+			</td>
+		</tr>
+</table
+</fieldset>
+
+<fieldset>
+	<legend>Strains (Alphabetical)</legend>
+	<% section_letter = @strains[0].symbol[0,1].upcase %>
+	<ol class="legend_list">
+		<li>Click Letter headers to show/hide the strain list in each section.</li>
+		<li>Add/remove strains from the analysis using checkboxes
+		<li class="optional">[optional] Make one strain the Primary Strain for haplotype coloring.</li>
+		<li class="optional">[optional] Divide strains into group 1 or 2 to identify polymorphic markers between groups</li>
+	</ol>
+	
+	<% 
+	current_letter_div_visibility = 'none'
+	if @selected_strain_letters && @selected_strain_letters.has_key?(section_letter)
+		current_letter_div_visibility = 'block'
+	end
+	%>
+	<div class="section_bar" >
+	<span onClick="show_sections('strains_<%= section_letter %>',false); return false;" 	 onMouseover="this.style.backgroundColor='yellow';"
+		 onMouseout="this.style.backgroundColor='#EBFFE6';"><span id='sec-text-strains_<%= section_letter %>'>+</span>&nbsp;<%= section_letter %></span> (<%= check_box_tag "strain_letter_#{section_letter}", 1, @strains_by_first_letter_checkbox_status[section_letter], {:onclick => "include_all_strains_starting_with('#{section_letter}')"} %> toggle all <%=  @strains_by_first_letter[section_letter] %> strains)
+	</div>
+	<div id="sec-strains_<%= section_letter %>" class="section_content dropshadow draw_div" style="display: <%= current_letter_div_visibility %>;">
+			<table width="100%" cellspacing="0" class="strain_list">
+				<tr>
+					<td>Add</td>
+					<td>Strain</td>
+					<td><img src="/images/common/primary_strain_icon.gif" alt="Select Primary Strain" width="20" height="20"></td>
+					<td>1</td>
+					<td>2</td>
+				</tr>
+	<% @strains.each do |str| 
+		current_letter = str.symbol[0,1].upcase
+		if current_letter != section_letter
+			section_letter = current_letter
+			current_letter_div_visibility = 'none'
+			if @selected_strain_letters && @selected_strain_letters.has_key?(section_letter)
+				current_letter_div_visibility = 'block'
+			end
+		%>
+		</table>
+		</div>
+		<div class="section_bar" >
+		<span onClick="show_sections('strains_<%= section_letter %>',false); return false;" 	 onMouseover="this.style.backgroundColor='yellow';"
+			 onMouseout="this.style.backgroundColor='#EBFFE6';"><span id='sec-text-strains_<%= section_letter %>'>+</span>&nbsp;<%= section_letter %></span> (<%= check_box_tag "strain_letter_#{section_letter}", 1, @strains_by_first_letter_checkbox_status[section_letter], {:onclick => "include_all_strains_starting_with('#{section_letter}')"} %> toggle all <%=  @strains_by_first_letter[section_letter] %> strains)
+		</div>
+		<div id="sec-strains_<%= current_letter %>" class="section_content dropshadow draw_div" style="display: <%= current_letter_div_visibility %>;">
+				<table width="100%" cellspacing="0" class="strain_list">
+					<tr>
+						<td>Add</td>
+						<td>Strain</td>
+						<td><img src="/images/common/primary_strain_icon.gif" alt="Select Primary Strain" width="20" height="20"></td>
+						<td>1</td>
+						<td>2</td>
+					</tr>
+		<% end  %>
+	
+			<tr>
+		<% if @analysis.strains.index(str) != nil %>
+			<td><%= check_box_tag "strain[#{str.id}]", 1, true, {:onclick => "activate_strain_options(#{str.id});", :class => "strain_checkbox_#{current_letter}"} %></td>
+			<td>
+				<% if str.snp_count > 0 %>
+					<img src="/images/common/snp_icon.png" title="<%= str.snp_count %> SNP genotypes" width="13" height="14">
+				<% else %>
+					<img src="/images/common/snp_icon_inactive.png" title="No SNP genotypes" width="13" height="14">
+				<% end %>
+				<% if str.microsatellite_count > 0 %>
+					<img src="/images/common/microsat_icon.png" title="<%= str.microsatellite_count %> Microsatellite genotypes" width="13" height="14">
+				<% else %>
+					<img src="/images/common/microsat_icon_inactive.png" title="No Microsatellite genotypes" width="13" height="14">
+				<% end %>
+				<label for="strain_<%= str.id %>"><%= str.symbol %> ()</label></td>
+			<% if @analysis.primary_strain_id && @analysis.primary_strain_id == str.id %>
+				<td><%= radio_button_tag( "output[primary_strain]", str.id, true) %></td>
+			<% else%>
+				<td><%= radio_button_tag( "output[primary_strain]", str.id, false) %></td>
+			<% end %>
+			<td><%= radio_button_tag( "#{str.id}_group", 1, @analysis.selected_strains.find_by_strain_id(str.id).is_group1?) %></td>
+			<td><%= radio_button_tag( "#{str.id}_group", 2, @analysis.selected_strains.find_by_strain_id(str.id).is_group2?) %></td>
+		<% else %>
+			<td><%= check_box_tag "strain[#{str.id}]", 1, false,  {:onclick => "activate_strain_options(#{str.id});", :class => "strain_checkbox_#{current_letter}"} %></td>
+			<td>
+				<% if str.snp_count > 0 %>
+					<img src="/images/common/snp_icon.png" title="<%= str.snp_count %> SNP genotypes" width="13" height="14">
+				<% else %>
+					<img src="/images/common/snp_icon_inactive.png" title="No SNP genotypes" width="13" height="14">
+				<% end %>
+				<% if str.microsatellite_count > 0 %>
+					<img src="/images/common/microsat_icon.png" title="<%= str.microsatellite_count %> Microsatellite genotypes" width="13" height="14">
+				<% else %>
+					<img src="/images/common/microsat_icon_inactive.png" title="No Microsatellite genotypes" width="13" height="14">
+				<% end %>
+				<label for="strain_<%= str.id %>"><%= str.symbol %></label></td>
+			<td><%= radio_button_tag( "output[primary_strain]", str.id, false, {:disabled => true}) %></td>
+			<td><%= radio_button_tag( "#{str.id}_group", 1, true, {:disabled => true}) %></td>
+			<td><%= radio_button_tag( "#{str.id}_group", 2, false, {:disabled => true}) %></td>
+		<% end %>
+			</tr>
+	<% end %>
+	</table>
+		</div>
+	
+</fieldset>
+</td>
+
+<td style="width: 200px;">
+		<div id="main_parameters">
+			<%= render :partial => "list_parameters", :locals => {:analysis => @analysis }%>
+		</div>
+</td>
+
+<td id="other_parameters">
+<!-- 
+<fieldset>
+	<legend>Optional Strain filters</legend>
+<p><label for="origin_lab">Strain Source (Lab)</label>
+<select name="origin[lab]">
+	<option value="0" selected="selected">Any Source</option>
+	<% @lab_menu.each do |lab| %>
+       <option value="<%= lab %>"><%= lab %></option>
+     <% end %>
+</select></p>
+
+<p><label for="origin">Strain Source (Country)</label>
+<select name="origin[country]">
+	<option value="0" selected="selected">Any Country</option>
+	<% @country_menu.each do |country| %>
+       <option value="<%= country %>"><%= country %></option>
+     <% end %>
+</select></p>
+</fieldset> 
+-->
+
+<% if !@traits.empty? %>
+
+<fieldset>
+	<legend>Phenotype Data</legend>
+<p>Order strains by their values for the following trait</br>
+	<select name="traitsort[trait]">
+		<option value="0" selected="selected">None</option>
+		<% @traits.each do |trait| %>
+	       <option value="<%= trait.id %>"><%= trait.code %>%</option>
+	     <% end %>
+	</select></p>
+</fieldset>
+
+<% end %>
+
+<fieldset>
+	<legend>Basic Marker Filters</legend>
+	<%= check_box_tag "markerfilter[include_snps]", 1, true %> <label for="markerfilter_include_snps"><img src="/images/common/snp_icon.png" width="13" height="14"> Include SNPs</label></br>
+	<%= check_box_tag "markerfilter[include_sslps]", 1, true %> <label for="markerfilter_include_sslps"><img src="/images/common/microsat_icon.png" width="13" height="14"> Include Microsatellites</label></br>
+	
+</fieldset>
+
+<fieldset>
+	<legend>Optional Marker Filters</legend>
+<p>Exclude markers where <select name="strainfilter[exclude]">
+		<option value="-1" selected="selected">-</option>
+		<option value="0">Any</option>
+		<% [1,5,7,10,20,30,40,50,60,70,80,90,100].each do |percent| %>
+	       <option value="<%= percent %>">> <%= percent %>% of</option>
+	     <% end %>
+	</select> genotypes are missing</p>
+</fieldset>
+
+<fieldset>
+	<legend>GBrowse Settings</legend>
+	<%= check_box_tag "gbrowse['RGD_curated_genes']", 1, false %> <label for="gbrowse_RGD_curated_genes">Show RGD Genes</label></br>
+	<%= check_box_tag "gbrowse['RGD_SSLP']", 1, false %> <label for="gbrowse_RGD_SSLP">Show Microsatellites</label></br>
+	<%= check_box_tag "gbrowse['QTLS']", 1, false %> <label for="gbrowse_QTLS">Show QTL</label></br>
+</fieldset>
+
+<fieldset>
+	<legend>Output Options</legend>
+<p>Please select the output you need: <select name="output[options]">
+		<option value="phased_haplotype" selected="selected">Colored Haplotype Image</option>
+		<!-- <option value="haploview_basic">Haploview & LD Plot</option>
+			<option value="haploview_advanced">Haploview & LD Plot & Tag SNP analysis</option> -->
+	</select></p>
+	<%= check_box_tag "output[hcluster]", 1, false %> <label for="output_hcluster">Hierarchical Cluster Strains</label></br>
+</fieldset>
+
+<fieldset>
+	<legend>Image Orientation</legend>
+	<%= check_box_tag "orientation['landscape']", 1, false %> <label for="orientation_landscape">Display Haplotype in Landscape view</label></br>
+</fieldset>
+<!-- <fieldset>
+	<legend>Current Selections</legend>
+<div id="parameters_selected">
+	<ul class="parameters">
+	<li class="section"><strong>Region:</strong></li>
+	<li>Chromosome: </li>
+	<li>Start: </li>
+	<li>Stop: </li>
+	</ul>
+</div>
+</fieldset> -->
+<!--[eoform:list]-->
+</td>

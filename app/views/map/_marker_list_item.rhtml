@@ -1,0 +1,28 @@
+
+<% marker_list_item.sequence[40] =  "<span class=\"allele\">[#{marker_list_item.target_allele}]</span>" %>
+<tr class="marker_detail">
+	<td><%= link_to_remote( "<span id=\"marker_label_#{marker_list_item.id}\">[+]</span>",
+		                   :update => "snp_div_#{marker_list_item.id}",
+		                   :url => { :action => :get_highres_gbrowse, :id => marker_list_item.id },
+						   :complete => visual_effect(:highlight, "snp_div_#{marker_list_item.id}", :duration => 1.0),
+
+						   :before => "Element.show('spinner_#{marker_list_item.id}'); if (Element.visible('snp_div_#{marker_list_item.id}')) { Element.hide('snp_div_#{marker_list_item.id}'); Element.hide('spinner_#{marker_list_item.id}'); document.getElementById('marker_label_#{marker_list_item.id}').innerHTML='[+]'; return false;}",
+					       :success => "Element.hide('spinner_#{marker_list_item.id}'); Element.show('snp_div_#{marker_list_item.id}'); document.getElementById('marker_label_#{marker_list_item.id}').innerHTML='[-]';"
+						) %>
+				<%= image_tag("common/spinner.gif",
+		              :align => 'absmiddle',
+		              :border=> 0,
+		              :id => "spinner_#{marker_list_item.id}",
+		              :style=>"display: none;" ) %>
+		</span> <%= marker_list_item.symbol %>
+		</td>
+	<td align="center"><%= marker_list_item.map_positions[0].chromosome_label %>:<%= marker_list_item.map_positions[0].start %></td>
+	<td align="center"><%= marker_list_item.target_allele %></td>
+	<td class="sequence"><%= marker_list_item.sequence %></td>
+</tr>
+<tr class="marker_genome">
+	<td colspan="5" valign="top">
+		<div id="snp_div_<%= marker_list_item.id %>" style="display: none; background-color: #eee; margin-bottom: 5px">
+		</div>
+	</td>
+</tr>

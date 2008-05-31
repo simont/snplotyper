@@ -1,0 +1,18 @@
+<h1>Load SNP File</h1>
+
+<%= form_tag({:action=>'load_snps'}, :multipart => true)%>
+<p><label for="inputfile">Upload a list of SNPs or Microsatellites and their genotypes from file</label></br>
+	<input type="file" name="inputfile"></p>
+	<select name="snp_format" id="snp_format">
+		<option value="hapmap_genotype">Human HapMap Genotype File</option>
+		<option value="mdc_genotype">Rat MDC SNP genotype File</option>
+		<option value="sslp_allele_data">RGD SSLP Allele File</option>
+		<option value="hjj_sslp_snp_with_traits">HJJ SNP/SSLP mixed Allele File</option>
+	</select>
+  <%= submit_tag "Load SNPs" %>
+<%= end_form_tag %>
+
+<%= @file_contents["snp_count"] if @file_contents != nil %>
+<%= @file_contents["genotype_count"] if @file_contents != nil %>
+<%= @file_contents["incomplete_data_error_count"] if @file_contents != nil %>
+

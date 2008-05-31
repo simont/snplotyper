@@ -1,0 +1,16 @@
+<h1>HaploView results for Chr <%= @chromosome %>:<%= number_with_delimiter(@start) %> - <%=  number_with_delimiter(@stop) %></h1>
+<p>This region was divided into <%= @files.size %> chunks for analysis:</p>
+
+<ul>
+	
+<% @chunk_info_list.each_with_index do |ch,i| %>
+<li><a href="#<%= ch["file_name"] %>">Chunk <%= i+1 %></a> (<%= number_with_delimiter(ch["start"]) %> - <%= number_with_delimiter(ch["end"]) %>
+) <%= ch["snp_count"]-1 %> SNPs</li>
+<% end %>
+</ul>
+
+</br>
+
+<% @chunk_info_list.each_with_index do |ch,i| %>
+	<%= render :partial => 'chunk_results', :locals => { :info => ch }  %>
+<% end %>

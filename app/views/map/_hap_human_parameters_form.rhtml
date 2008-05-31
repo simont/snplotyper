@@ -1,0 +1,95 @@
+<!--[form:list]-->
+
+<input name="region[map_id]" type="hidden" id="region_map_id" value="<%= @map_id %>">
+
+
+
+
+<fieldset>
+	<legend>Region Parameters</legend>
+<p><label for="region_chromosome">Chromosome</label>
+<!-- 	onChange="document.getElementById('param_chromosome').innerHTML=chr_select.value;" -->
+	<select name="region[chromosome]" id="chr_select">
+		<option value="0" selected="selected">Select Chromosome</option>
+		<% @chromosome_menu.each do |chr| %>
+	       <option value="<%= chr %>"><%= chr %></option>
+	     <% end %>
+	</select></p>
+
+<p>From: <label for="region_start">Start</label>
+<%= text_field 'region','start', "size" => 10 %> to <label for="region_end">End</label> 
+<%= text_field 'region','end', "size" => 10 %></p>
+</fieldset>
+
+<fieldset>
+	<legend>Hapmap Population</legend>
+<p><label for="origin_population">Population</label>
+<select name="origin[population]">
+	<option value="0" selected="selected">All Populations</option>
+	<% @population_menu.each do |population| %>
+       <option value="<%= population %>"><%= population %></option>
+     <% end %>
+</select></p>
+</fieldset>
+
+<fieldset>
+	<legend>Strains (Alphabetical)</legend>
+	<% section_letter = 'A' %>
+	<p>Click Letter headers to show/hide the strain list in each section</p>
+		<!-- <div class="section_bar" onClick="show_sections('strains_A',false); return false;" onMouseover="this.style.backgroundColor='yellow';"
+	 onMouseout="this.style.backgroundColor='#EBFFE6';"><span id='sec-text-strains_A'>+</span>&nbsp;A</div>
+<div id="sec-strains_A" class="section_content">
+	
+	<% @strains.each do |str| 
+		current_letter = str.symbol[0,1].upcase
+		if current_letter != section_letter
+			section_letter = current_letter
+		%>
+		</div> -->
+		<div class="section_bar" onClick="show_sections('strains_<%= current_letter %>'); return false;" onMouseover="this.style.backgroundColor='yellow';"
+		 onMouseout="this.style.backgroundColor='#EBFFE6';"><span id='sec-text-strains_<%= current_letter %>'>+</span>&nbsp;<%= current_letter %></div>
+		<div id="sec-strains_<%= current_letter %>" class="section_content" style="display: none;">
+		<% else  %>
+		<%= check_box_tag "strain[#{str.id}]", 1, false %> <label for="strain_<%= str.id %>"><%= str.symbol %> (<%= str.origin_lab %> - <%= str.origin %>)</label></br>
+		<% end%>
+	<% end %>
+
+		</div>
+	
+</fieldset>
+
+
+<fieldset>
+	<legend>Optional Marker Filters</legend>
+<p>Exclude SNPs where more than <select name="strainfilter[exclude]">
+		<option value="0" selected="selected">-</option>
+		<% [50,60,70,80,90,100].each do |percent| %>
+	       <option value="<%= percent %>"><%= percent %>%</option>
+	     <% end %>
+	</select> of markers are null</p>
+</fieldset>
+
+<%= render :partial => "haploview_form_params" %>
+
+<fieldset>
+	<legend>Output Options</legend>
+<p>Please select the output you need: <select name="output[options]">
+		<option value="phased_haplotype" selected="selected">Phased Haplotype Image</option>
+		<option value="haploview_basic">Haploview & LD Plot (& Tag SNP if selected)</option>
+	</select></p>
+</fieldset>
+
+<!-- <fieldset>
+	<legend>GBrowse Display Settings</legend>
+	<%= check_box_tag "gbrowse['RGD_curated_genes']", 1, false %> <label for="gbrowse_RGD_curated_genes">Show RGD Genes</label></br>
+	<%= check_box_tag "gbrowse['RGD_SSLP']", 1, false %> <label for="gbrowse_RGD_SSLP">Show microsatellite markers (SSLP)</label></br>
+	<%= check_box_tag "gbrowse['QTLS']", 1, false %> <label for="gbrowse_QTLS">Show Quantitative Trait Loci (QTL)</label></br>
+</fieldset>
+
+<fieldset>
+	<legend>Image Orientation</legend>
+	<%= check_box_tag "orientation['landscape']", 1, false %> <label for="orientation_landscape">Display Haplotype in Landscape view</label></br>
+</fieldset> -->
+
+
+<!--[eoform:list]-->

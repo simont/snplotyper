@@ -1,0 +1,14 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+rat_34:
+  id: 1
+  name: RGNC v3.4
+  map_type: genomic
+  version: 3.4
+  units: bp
+      
+ncbi_35:
+  id: 2
+  name: ncbi_35
+  map_type: genomic
+  version: 35
+  units: bp

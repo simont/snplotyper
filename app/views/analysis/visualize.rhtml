@@ -1,0 +1,90 @@
+<div id="page_intro">
+	
+	<h1>Visual Haplotype View</h1>
+	<p>View of haplotype blocks for Chr <%= @analysis.chromosome %>:<%= number_with_delimiter(@analysis.start) %> - <%= number_with_delimiter(@analysis.end) %> [View this region in <a href="http://genome.ucsc.edu/cgi-bin/hgTracks?hgsid=99646183&clade=vertebrate&org=Rat&db=rn4&position=chr<%= @analysis.chromosome %>%3A<%= number_with_delimiter(@analysis.start) %>-<%= number_with_delimiter(@analysis.end) %>&pix=1000&Submit=submit&hgsid=99646183" target="blank" title="Open UCSC Genome Browser in a new window">UCSC Genome Browser</a> | <a href="http://www.ensembl.org/Rattus_norvegicus/contigview?chr=<%= @analysis.chromosome %>&region=&start=<%= @analysis.start %>&end=<%= @analysis.end %>" target="blank" title="Open Ensembl Genome Browser in a new window">Ensembl</a> | <a href="http://www.ncbi.nlm.nih.gov/mapview/maps.cgi?TAXID=10116&CHR=<%= @analysis.chromosome %>&MAPS=cntg-r%2CugRn%2Cgenes&BEG=<%= @analysis.start %>&END=<%= @analysis.end %>&thmb=on" target="blank" title="Open NCBI Map Viewer in a new window">NCBI</a>]</p>
+	<% if @removed_markers.size >= 1 %>
+		<p><%= @removed_markers.size %> of <%= @original_number_of_markers_in_region %> markers were removed because they had insufficient genotype data</p>
+	<% end %>
+	</br>
+
+	<form action="/analysis/edit" method="post" style="display: inline;">
+		<input name="the_id" type="hidden" value="<%= @analysis.id %>" />
+		<%= submit_tag("Edit this analysis") %>
+	</form>
+
+	<form action="/analysis/edit" method="post" style="display: inline;">
+		<input name="the_id" type="hidden" value="<%= @analysis.id %>" />
+		<input name="clone" type="hidden" value="yes" />
+		<%= submit_tag("Start new analysis based upon this analysis") %>
+	</form>
+	
+
+</div>
+<div class="tab-pane" id="tab-pane-1">
+
+	<div class="tab-page">
+	      <h2 class="tab">Visual Haplotype</h2>
+
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="details">To save the haplotype image below, right-click the image and select 'save image as...' or drag and drop the image on to your desktop</td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+		<td><img src="<%= @image_src %>" alt="Visual Haplotype Image"></td>
+	</tr>
+</table>
+
+</div>
+<% if @selected_trait != nil %>
+	<div class="tab-page">
+	      <h2 class="tab">Trait Data</h2>
+
+		<table id="phenotype_list" cellspacing="0" cellpadding="0">
+			<tr>
+				<th>Trait</th>
+				<% @strain_sorted.each do |str| %>
+				<th><%= Strain.find(str.strain_id).symbol %></th>
+				<% end %>
+			</tr>
+			<% Trait.find(:all).each do |tr| 
+				if tr.id == @selected_trait.to_i %>
+				<tr class="selected">
+				<% else %>
+				<tr>
+				<% end %>
+				<td><%= tr.code %></td>
+				<% @strain_sorted.each do |str| %>
+				<td><% data = TraitMeasurement.find_by_strain_id_and_trait_id(str.strain_id, tr.id)
+						if data != nil %>
+						<%= data.value %>
+						<% else %>
+						-
+						<% end %>
+</td>
+				<% end %>
+			</tr>
+			<% end %>
+		</table>
+
+		</div>
+
+<% end %>
+
+<div class="tab-page">
+      <h2 class="tab">Marker Table</h2>
+		<%= link_to 'Download Marker table as tab-delimited text', { :action => "get_marker_list_as_file", :id => @analysis}  %>
+<table id="marker_list" cellspacing="0" cellpadding="0">
+	<tr>
+		<th>Symbol</th>
+		<th>Position</th>
+		<th>Allele</th>
+		<th>Sequence</th>
+		<% @strain_sorted.each do |str| %>
+		<th><%= Strain.find(str.strain_id).symbol %></th>
+		<% end %>
+	</tr>
+	<%= render :partial => 'marker_list_item', :collection => @markers, :locals => {:genos => @marker_genotypes}   %>
+</table>
+
+</div>

@@ -1,0 +1,31 @@
+<p>Current Selections</p>
+<ul class="parameters">
+<li class="section"><strong>Region:</strong></li>
+<li>Chromosome: <%= @chromosome %></li>
+<li>Start: <%= number_with_delimiter(@start) %></li>
+<li>Stop: <%= number_with_delimiter(@stop) %></li>
+<% if @snp_count %>
+	<% if @snp_count == 0 %>
+		<span style='color: red;'><%= @snp_count %> SNPs in this region</span></br>
+	<% else %>
+		<%= @snp_count %> SNPs in this region </br>
+	<% end %>
+<% end %>
+
+<% if @strains.empty? %>
+	<li class="section"><strong>Strains:</strong> <span style='color: red;'>None Selected</span></li>
+<% else %>
+	<li class="section"><strong>Strains:</strong></li>
+	<% @strains.each do |str| %>
+		<li><%= str.symbol %></li>
+	<% end %>
+<% end %>
+<!-- <li class="section"><strong>Filters:</strong></li>
+<li>Filter by Country: <%= @country %></li>
+<li>Filter by Lab: <%= @lab %></li> -->
+ <% if @form_complete %>
+  <%= submit_tag(value = "Create View") %>
+ <% else %>
+  <input disabled type="submit" value = "Create View">
+<% end %>
+</ul>

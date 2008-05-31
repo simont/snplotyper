@@ -1,0 +1,147 @@
+
+<!--[form:list]-->
+<td>
+<fieldset>
+	<legend>Region Parameters</legend>
+	<table>
+		<tr>
+			<td>
+<label for="analysis_chromosome">Chromosome</label>
+			</td>
+			<td>
+	<select name="analysis[chromosome]" id="chr_select">
+		<option value="0" selected="selected">Select Chromosome</option>
+		<% @chromosome_menu.each do |chr| %>
+	       <option value="<%= chr %>"><%= chr %></option>
+	     <% end %>
+	</select></p>
+		</td>
+		</tr>
+		<tr>
+			<td>
+<p><label for="analysis_start">From: </label></td>
+	<td>
+<%= text_field 'analysis','start', "size" => 10 %> bp
+</td>
+</tr>
+<tr>
+	<td>
+<label for="analysis_end">To: </label>
+</td>
+<td>
+<%= text_field 'analysis','end', "size" => 10 %> bp</td>
+		</tr>
+</table
+</fieldset>
+
+<fieldset>
+	<legend>Strains (Alphabetical)</legend>
+	<% section_letter = 'A' %>
+	<p>Click Letter headers to show/hide the strain list in each section</p>
+	<div class="section_bar" onClick="show_sections('strains_A',false); return false;" onMouseover="this.style.backgroundColor='yellow';"
+	 onMouseout="this.style.backgroundColor='#EBFFE6';"><span id='sec-text-strains_A'>+</span>&nbsp;A</div>
+	<div id="sec-strains_A" class="section_content dropshadow draw_div">
+			<table width="100%" cellspacing="0" class="strain_list">
+				<tr>
+					<td>Add</td>
+					<td>Strain</td>
+					<td>Pri</td>
+				</tr>
+	<% @strains.each do |str| 
+		current_letter = str.symbol[0,1].upcase
+		if current_letter != section_letter
+			section_letter = current_letter
+		%>
+		</table>
+		</div>
+		<div class="section_bar" onClick="show_sections('strains_<%= current_letter %>'); return false;" onMouseover="this.style.backgroundColor='yellow';"
+		 onMouseout="this.style.backgroundColor='#EBFFE6';"><span id='sec-text-strains_<%= current_letter %>'>+</span>&nbsp;<%= current_letter %></div>
+		<div id="sec-strains_<%= current_letter %>" class="section_content dropshadow draw_div" style="display: none;">
+				<table width="100%" cellspacing="0" class="strain_list">
+					<tr>
+						<td>Add</td>
+						<td>Strain</td>
+						<td>Pri</td>
+					</tr>
+		<% end  %>
+			<tr>
+				<td><%= check_box_tag "strain[#{str.id}]", 1, false %></td>	
+				<td><label for="strain_<%= str.id %>"><%= str.symbol %></label></td>
+				<td><%= radio_button( "output", "primary_strain", str.id) %></span></td>
+			</tr>
+	<% end %>
+	</table>
+		</div>
+	
+</fieldset>
+</td>
+<td style="width: 200px;">
+		<div id="main_parameters">
+			<%= render :partial => "list_parameters", :locals => {:analysis => @analysis }%>
+		</div>
+</td>
+<td id="other_parameters">
+<!-- 
+<fieldset>
+	<legend>Optional Strain filters</legend>
+<p><label for="origin_lab">Strain Source (Lab)</label>
+<select name="origin[lab]">
+	<option value="0" selected="selected">Any Source</option>
+	<% @lab_menu.each do |lab| %>
+       <option value="<%= lab %>"><%= lab %></option>
+     <% end %>
+</select></p>
+
+<p><label for="origin">Strain Source (Country)</label>
+<select name="origin[country]">
+	<option value="0" selected="selected">Any Country</option>
+	<% @country_menu.each do |country| %>
+       <option value="<%= country %>"><%= country %></option>
+     <% end %>
+</select></p>
+</fieldset> 
+-->
+
+<fieldset>
+	<legend>Optional Marker Filters</legend>
+<p>Exclude SNPs where more than <select name="strainfilter[exclude]">
+		<option value="0" selected="selected">-</option>
+		<% [10,20,30,40,50,60,70,80,90,100].each do |percent| %>
+	       <option value="<%= percent %>"><%= percent %>%</option>
+	     <% end %>
+	</select> of markers have no data</p>
+</fieldset>
+
+<fieldset>
+	<legend>GBrowse Display Settings</legend>
+	<%= check_box_tag "gbrowse['RGD_curated_genes']", 1, false %> <label for="gbrowse_RGD_curated_genes">Show RGD Genes</label></br>
+	<%= check_box_tag "gbrowse['RGD_SSLP']", 1, false %> <label for="gbrowse_RGD_SSLP">Show microsatellite markers (SSLP)</label></br>
+	<%= check_box_tag "gbrowse['QTLS']", 1, false %> <label for="gbrowse_QTLS">Show Quantitative Trait Loci (QTL)</label></br>
+</fieldset>
+
+<fieldset>
+	<legend>Output Options</legend>
+<p>Please select the output you need: <select name="output[options]">
+		<option value="phased_haplotype" selected="selected">Colored Haplotype Image</option>
+		<!-- <option value="haploview_basic">Haploview & LD Plot</option>
+			<option value="haploview_advanced">Haploview & LD Plot & Tag SNP analysis</option> -->
+	</select></p>
+</fieldset>
+
+<fieldset>
+	<legend>Image Orientation</legend>
+	<%= check_box_tag "orientation['landscape']", 1, false %> <label for="orientation_landscape">Display Haplotype in Landscape view</label></br>
+</fieldset>
+<!-- <fieldset>
+	<legend>Current Selections</legend>
+<div id="parameters_selected">
+	<ul class="parameters">
+	<li class="section"><strong>Region:</strong></li>
+	<li>Chromosome: </li>
+	<li>Start: </li>
+	<li>Stop: </li>
+	</ul>
+</div>
+</fieldset> -->
+<!--[eoform:list]-->
+</td>

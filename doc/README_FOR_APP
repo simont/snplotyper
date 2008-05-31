@@ -1,0 +1,48 @@
+SNPlotyper - Aiming to do for SNPs what ACP Haplotyper did for microsatellites, well maybe a little more too.
+
+Major information:
+
+SNP - The SNPs that were genotyped in the strains
+Sequence
+Alleles
+Map locations on genome build(s)
+
+Strains - The rat strains that were genotyped for the various SNPs
+Symbol
+source
+lab
+MDC designation
+
+Genotypes - join between SNP and Strain
+target and allele (A/T - means usually A but the minor allele is T?)
+BN expected genotype
+Observed genotyped in each strain (range of values, 0,1,2,5,6)
+
+
+Goals:
+
+Need to be able to visualize the SNPs across the strains in a similar fashion to ACP haplotyper
+Integrate SSLP and SNP data together to compare & contrast
+
+
+SNP export to Haploview, etc.
+
+Select region
+[Choose partition algorithm]
+Select output options
+* Visual haplotype (phased haplotype, snployper default view)
+* Haploview
+** If Haploview, need to select parameters for tag snp selection, marker inclusion, etc
+** Have a form to enter params, defaults based on Ernie's settings - but ultimately these should come from a config file or database table, unique to a user
+Create haploview compatible files from database for the region(s) selected
+Run haploview in batch mode with the options provided
+Save the files in a directory and provide web front end.
+* Perhaps save top level web page and associated files, images, output, etc. in single dir that can be archived and sent back to user.
+
+TODO Restore primary strain selection when editing, highlight on history table
+TODO Create graphics for Edit This Analysis and Start new Analysis buttons on Visualize view
+
+
+Installation
+
+rsruby for R connectivity
